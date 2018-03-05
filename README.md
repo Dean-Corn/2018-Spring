@@ -1,1 +1,3 @@
-# 2018-Spring
+# 2018Spring
+
+Repository meant to follow along with current class work.
