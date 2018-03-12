@@ -7,7 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MessagesComponent implements OnInit {
 
-  constructor() { }
+
+  Messages: string[];
+
+  constructor() {
+    this.Messages = ["New! You can now choose your own pictures."];
+   }
 
   ngOnInit() {
   }
