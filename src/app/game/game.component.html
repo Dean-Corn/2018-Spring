@@ -4,9 +4,9 @@
     <div class="card">
       <div class="card-header">My Quotes</div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item">Cras justo odio</li>
-        <li class="list-group-item">Dapibus ac facilisis in</li>
-        <li class="list-group-item">Vestibulum at eros</li>
+        <li *ngFor="let quote of Model.MyQuotes" class="list-group-item">
+          {{quote}}
+        </li>
       </ul>
     </div>
   </div>
@@ -15,8 +15,8 @@
     <div class="card">
         <div class="card-header">Played Quotes</div>
         <ul class="list-group list-group-flush">
-          <li *ngFor="let quote of Model.MyQuotes" class="list-group-item">
-            {{quote}}
+          <li *ngFor="let quote of Model.PlayedQuotes" class="list-group-item">
+            {{quote.Text}}
           </li>
         </ul>
       </div>
@@ -28,11 +28,11 @@
   <div class="col-md-4">
     Other Players
     <div class="card">
-        <div class="card-header">Other Players</div>
+      <div class="card-header">Other Players</div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item">Cras justo odio</li>
-          <li class="list-group-item">Dapibus ac facilisis in</li>
-          <li class="list-group-item">Vestibulum at eros</li>
+          <li *ngFor="let player of Model.Players" class="list-group-item">
+            {{player.Name}}
+          </li>
         </ul>
       </div>
   </div>
