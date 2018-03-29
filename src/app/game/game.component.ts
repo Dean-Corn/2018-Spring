@@ -29,7 +29,11 @@ export class GameComponent implements OnInit {
     this.Model.MyQuotes.splice( this.Model.MyQuotes.indexOf(text), 1 );
   }
 
-  MyPlayedMyQuote(): Quote | null {
-    return this.Model.PlayedQuotes.find( x => x.PlayerName == this.Me.Name );
-  }
+  MyPlayedMyQuote = () => this.Model.PlayedQuotes.find( x => x.PlayerName == this.Me.Name );
+
+  ChosenQuote = () => this.Model.PlayedQuotes.find( x => x.Chosen);
+
+  IsEveryoneDone = () => this.Model.PlayedQuotes.length == this.Model.Players.length - 1;
+
+  IAmTheDealer = () => this.Me.Name == this.Model.Dealer;
 }
