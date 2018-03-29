@@ -23,13 +23,13 @@ export class GameComponent implements OnInit {
   submitQuote(e: MouseEvent, text: string) {
     e.preventDefault();
 
-    if(this.MyPlayedMyQuote()) return;
+    if(this.MyPlayedQuote()) return;
 
     this.Model.PlayedQuotes.push({Text: text, PlayerName: this.Me.Name, Chosen: false});
     this.Model.MyQuotes.splice( this.Model.MyQuotes.indexOf(text), 1 );
   }
 
-  MyPlayedMyQuote = () => this.Model.PlayedQuotes.find( x => x.PlayerName == this.Me.Name );
+  MyPlayedQuote = () => this.Model.PlayedQuotes.find( x => x.PlayerName == this.Me.Name );
 
   ChosenQuote = () => this.Model.PlayedQuotes.find( x => x.Chosen);
 
