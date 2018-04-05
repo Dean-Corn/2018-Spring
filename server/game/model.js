@@ -1,3 +1,5 @@
+var axios = require("axios");
+
 const QuoteStack = [
     "Wisdom is the reward you get for a lifetime of listening when you'd have preferred to talk. -Doug Larson",
     "If you make listening and observation your occupation, you will gain much more than you can by talk. -Robert Baden-Powell",
@@ -103,20 +105,32 @@ const QuoteStack = [
 
 var iCurrentQuote = 0;
 
-const PictureStack = [
+var PictureStack = [
 
 ];
 
+axios.get('https://api.imgflip.com/get_memes')
+    .then( response => PictureStack = response.data.data.memes )
+
 var iCurrentPicture = 0;
 
-class Game {
-    Players;
-    DealerId;
-    PlayedQuotes;
-    Picture;
-    GetQuotes = () => ;
+
+function Game() {
+        this.Players = [];
+        this.DealerId = null;
+
+        this.PlayedQuotes = [];
+        this.Picture = null;
+
+        this.GetQuotes = () => QuoteStack.slice(iCurrentQuote, iCurrentQuote += 7);
+        this.FlipPicture = () => this.Picture = PictureStack[iCurrentPicture = (iCurrentPicture + 1) % PictureStack.length];
+
+        this.SubmitQuote = (text, playerId) => this.PlayedQuotes.push({ Text: text, PlayerId: playerId });
+        this.ChooseQuote = text => {
+            this.PlayedQuotes.find(x => x.Text == text).Chosen = true;
+            this.DealerId = this.Players[this.DealerId = (this.DealerId + 1) % this.Players.length];
+        };
 }
 
-var GetQuotes = () => QuotesStack.slice(iCurrentQuote, iCurrentQuote += 7)
 
-module.exports.GetQuotes = GetQuotes;
+module.exports = Game;
