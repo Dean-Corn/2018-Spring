@@ -1,15 +1,11 @@
 
 
 export class Game {
-    MyQuotes: string[] = [
-        "Great minds think alike",
-        "Axis of Evil",
-        "There are two extremes"
-    ];
+
     Players: User[] = [
-        {Name: 'Dean Corn'},
-        {Name: 'Jeffrey DaSilva'},
-        {Name: 'Brandon Zlatniki'}
+        {Name: 'Dean Corn', MyQuotes: []},
+        {Name: 'Jeffrey DaSilva', MyQuotes: []},
+        {Name: 'Brandon Zlatniki', MyQuotes: []}
     ];
 
     Dealer: string = 'Dean Corn';
@@ -21,7 +17,7 @@ export class Game {
 
 export class User {
     Name: string;
-
+    MyQuotes: string[] = [];
 }
 
 export class Quote {

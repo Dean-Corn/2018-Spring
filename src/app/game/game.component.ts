@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Game } from '../models/game';
-import { User } from '../models/game';
-import { Quote } from '../models/game';
+import { Http } from '@angular/http'
+import { Game, User, Quote } from '../models/game';
 
 @Component({
   selector: 'app-game',
@@ -13,9 +12,19 @@ export class GameComponent implements OnInit {
   Model = new Game();
   Me = new User();
 
-  constructor() {
+  private _api = "http://localhost:9080/game";
+
+  constructor(private http: Http) {
     this.Me.Name="Dean Corn"
-   }
+    http.get(this._api + "/quotes").subscribe(data => this.Me.MyQuotes = data.json())
+    setInterval(() => this.refresh(), 1000)
+  }
+
+
+  refresh(){
+    this.http.get(this._api + "/state")
+      .subscribe(data => this.Model = data.json())
+  }
 
   ngOnInit() {
   }
@@ -26,7 +35,7 @@ export class GameComponent implements OnInit {
     if(this.MyPlayedQuote()) return;
 
     this.Model.PlayedQuotes.push({Text: text, PlayerName: this.Me.Name, Chosen: false});
-    this.Model.MyQuotes.splice( this.Model.MyQuotes.indexOf(text), 1 );
+    this.Me.MyQuotes.splice( this.Me.MyQuotes.indexOf(text), 1 );
   }
 
   MyPlayedQuote = () => this.Model.PlayedQuotes.find( x => x.PlayerName == this.Me.Name );
