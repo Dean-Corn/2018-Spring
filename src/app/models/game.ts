@@ -2,18 +2,13 @@
 
 export class Game {
 
-    Players: User[] = [
-        {Name: 'Dean Corn', MyQuotes: []},
-        {Name: 'Jeffrey DaSilva', MyQuotes: []},
-        {Name: 'Brandon Zlatniki', MyQuotes: []}
-    ];
+    Players: User[] = [];
 
-    Dealer: string = 'Dean Corn';
+    DealerId: string = 'Dean Corn';
     Picture: {
         url: string
     };
     PlayedQuotes: Quote[] = [
-        { Text: "That's fake news", PlayerName: "Jeffrey DaSilva", Chosen: false }
     ];
 }
 
@@ -24,6 +19,6 @@ export class User {
 
 export class Quote {
     Text: string;
-    PlayerName: string;
+    PlayerId: string;
     Chosen: boolean = false;
 }

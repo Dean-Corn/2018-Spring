@@ -16,7 +16,7 @@ export class GameComponent implements OnInit {
 
   constructor(private http: Http) {
     this.Me.Name="Dean Corn"
-    http.get(this._api + "/quotes").subscribe(data => this.Me.MyQuotes = data.json())
+    http.get(this._api + "/quotes", { params: {PlayerId: this.Me.Name} }).subscribe(data => this.Me.MyQuotes = data.json())
     setInterval(() => this.refresh(), 1000)
   }
 
@@ -37,16 +37,20 @@ export class GameComponent implements OnInit {
     e.preventDefault();
 
     if(this.MyPlayedQuote()) return;
-
-    this.Model.PlayedQuotes.push({Text: text, PlayerName: this.Me.Name, Chosen: false});
-    this.Me.MyQuotes.splice( this.Me.MyQuotes.indexOf(text), 1 );
+    this.http.post(this._api + "/quotes", {Text: text, PlayerId: this.Me.Name})
+      .subscribe(data =>{
+          if(data.json()){
+            this.Me.MyQuotes.splice( this.Me.MyQuotes.indexOf(text), 1 );
+          }
+        }
+      );
   }
 
-  MyPlayedQuote = () => this.Model.PlayedQuotes.find( x => x.PlayerName == this.Me.Name );
+  MyPlayedQuote = () => this.Model.PlayedQuotes.find( x => x.PlayerId == this.Me.Name );
 
   ChosenQuote = () => this.Model.PlayedQuotes.find( x => x.Chosen);
 
   IsEveryoneDone = () => this.Model.PlayedQuotes.length == this.Model.Players.length - 1;
 
-  IAmTheDealer = () => this.Me.Name == this.Model.Dealer;
+  IAmTheDealer = () => this.Me.Name == this.Model.DealerId;
 }

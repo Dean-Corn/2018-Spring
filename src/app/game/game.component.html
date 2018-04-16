@@ -23,7 +23,7 @@
           [ngClass]="{ 'list-group-item-success': quote.Chosen }">
             {{quote.Text}}
             <span *ngIf="!IsEveryoneDone() || (!IAmTheDealer() && !ChosenQuote())" class ="badge badge-light">hidden</span>
-            <span *ngIf="ChosenQuote()" class ="badge badge-primary">{{quote.PlayerName}}</span>
+            <span *ngIf="ChosenQuote()" class ="badge badge-primary">{{quote.PlayerId}}</span>
             <button *ngIf="IsEveryoneDone() && IAmTheDealer() && !ChosenQuote()" 
               class="btn btn-sm btn-primary"
               (click)="quote.Chosen = true">
@@ -33,11 +33,11 @@
         </ul>
       </div>
 
-    <div class="card">
-      <img class="card-img-top card-img-bottom" [src]="Model.Picture.url">
-      <div class="card-img-overlay" style="text-align: center">
-        <button class="btn btn-success btn-lg" (click)="flipPicture($event)">Flip the Picture</button>
-      </div>
+      <div class="card">
+        <img class="card-img" *ngIf="Model.Picture" [src]="Model.Picture.url" />
+        <div class="card-img-overlay" style="text-align: center">
+            <button class="btn btn-success btn-lg" (click)="flipPicture($event)">Flip the Picture</button>
+        </div>
     </div>
   </div>
   <div class="col-md-4">
