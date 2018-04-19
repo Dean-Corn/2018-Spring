@@ -16,3 +16,9 @@ module.exports = app
         game.SubmitQuote(req.body.Text, req.body.PlayerId);
         res.send( {success: true} );
     })
+    .post('/choose', (req, res) => {
+        console.log(req.body);
+        game.ChooseQuote(req.body.Text);
+        res.send( {success: true} );
+    })
+    .post('/dealer', (req, res) => game.FirstDealer(req.body.PlayerId))

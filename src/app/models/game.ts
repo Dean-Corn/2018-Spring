@@ -4,17 +4,17 @@ export class Game {
 
     Players: User[] = [];
 
-    DealerId: string = 'Dean Corn';
+    DealerId: string;
     Picture: {
         url: string
     };
-    PlayedQuotes: Quote[] = [
-    ];
+    PlayedQuotes: Quote[] = [];
 }
 
 export class User {
     Name: string;
     MyQuotes: string[] = [];
+    Score: number;
 }
 
 export class Quote {

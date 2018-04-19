@@ -1,12 +1,15 @@
-<div class="row">
+<div class="row" *ngIf="!Me">
+  <input #Name /><button (click)="login(Name.value)" >Login</button>
+  </div>
+  <div class="row" *ngIf="Me">
   <div class="col-md-4">
 
     <div class="card">
-      <div class="card-header">My Quotes</div>
+      <div class="card-header">My Quotes ({{Me.Name}})</div>
         <ul class="list-group list-group-flush my-quotes">
           <li *ngFor="let quote of Me.MyQuotes" 
             (click)="submitQuote($event, quote)"
-            [ngClass]="{ enabled: !MyPlayedQuote() }"
+            [ngClass]="{ enabled: !MyPlayedQuote() && !IAmTheDealer()}"
             class="list-group-item" >
             {{quote}}
           </li>
@@ -26,7 +29,7 @@
             <span *ngIf="ChosenQuote()" class ="badge badge-primary">{{quote.PlayerId}}</span>
             <button *ngIf="IsEveryoneDone() && IAmTheDealer() && !ChosenQuote()" 
               class="btn btn-sm btn-primary"
-              (click)="quote.Chosen = true">
+              (click)="chooseQuote($event, quote.Text)">
               Choose
             </button>
           </li>
@@ -36,7 +39,7 @@
       <div class="card">
         <img class="card-img" *ngIf="Model.Picture" [src]="Model.Picture.url" />
         <div class="card-img-overlay" style="text-align: center">
-            <button class="btn btn-success btn-lg" (click)="flipPicture($event)">Flip the Picture</button>
+            <button class="btn btn-success btn-lg" *ngIf="IAmTheDealer() && !FirstQuotePicked()" (click)="flipPicture($event)">Flip the Picture</button>
         </div>
     </div>
   </div>
@@ -46,7 +49,7 @@
       <div class="card-header">Other Players</div>
         <ul class="list-group list-group-flush">
           <li *ngFor="let player of Model.Players" class="list-group-item">
-            {{player.Name}}
+            {{player.Name}} Score: {{player.Score}}
           </li>
         </ul>
       </div>

@@ -114,6 +114,7 @@ axios.get('https://api.imgflip.com/get_memes')
 
 var iCurrentPicture = 0;
 
+var iCurrentDealer = 0;
 
 function Game() {
         this.Players = [];
@@ -122,21 +123,25 @@ function Game() {
         this.PlayedQuotes = [];
         this.Picture = null;
 
-        this.GetQuotes = () =>{
+        this.GetQuotes = (playerId) =>{
             if(this.Players.some(x=> x.PlayerId == playerId)){
 
             }else{
-                this.Players.push({ PlayerId: playerId, Name: playerId})
-                return QuoteStack.slice(iCurrentQuote, iCurrentQuote += 7);
-            }     
+                this.Players.push({ PlayerId: playerId, Name: playerId, Score: 0})
+            }
+            return QuoteStack.slice(iCurrentQuote, iCurrentQuote += 7);     
         } 
         this.FlipPicture = () => this.Picture = PictureStack[iCurrentPicture = (iCurrentPicture + 1) % PictureStack.length];
 
-        this.SubmitQuote = (text, playerId) => this.PlayedQuotes.push({ Text: text, PlayerId: playerId });
+        this.SubmitQuote = (text, playerId) => this.PlayedQuotes.push({ Text: text, PlayerId: playerId, Chosen: false });
         this.ChooseQuote = text => {
             this.PlayedQuotes.find(x => x.Text == text).Chosen = true;
-            this.DealerId = this.Players[this.DealerId = (this.DealerId + 1) % this.Players.length];
+            this.Players.find(x => x.PlayerId == this.PlayedQuotes.find(x => x.Chosen == true).PlayerId).Score += 1;
+            this.PlayedQuotes = [];
+            this.DealerId = this.Players[iCurrentDealer = (iCurrentDealer + 1) % this.Players.length].PlayerId;
         };
+        
+        this.FirstDealer = playerId => this.DealerId = playerId;
 }
 
 

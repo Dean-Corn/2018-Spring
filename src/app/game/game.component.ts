@@ -10,13 +10,11 @@ import { Game, User, Quote } from '../models/game';
 export class GameComponent implements OnInit {
 
   Model = new Game();
-  Me = new User();
+  Me: User;
 
   private _api = "http://localhost:9080/game";
 
   constructor(private http: Http) {
-    this.Me.Name="Dean Corn"
-    http.get(this._api + "/quotes", { params: {PlayerId: this.Me.Name} }).subscribe(data => this.Me.MyQuotes = data.json())
     setInterval(() => this.refresh(), 1000)
   }
 
@@ -29,6 +27,8 @@ export class GameComponent implements OnInit {
   }
 
   flipPicture(e: MouseEvent){
+    if(!this.IAmTheDealer()) return;
+    if(this.FirstQuotePicked()) return;
     this.http.post(this._api + "/picture", {})
       .subscribe();
   }
@@ -37,6 +37,7 @@ export class GameComponent implements OnInit {
     e.preventDefault();
 
     if(this.MyPlayedQuote()) return;
+    if(this.IAmTheDealer()) return;
     this.http.post(this._api + "/quotes", {Text: text, PlayerId: this.Me.Name})
       .subscribe(data =>{
           if(data.json()){
@@ -46,6 +47,27 @@ export class GameComponent implements OnInit {
       );
   }
 
+  chooseQuote(e: MouseEvent, text: string) {
+    e.preventDefault();
+
+    if(!this.IAmTheDealer()) return;
+    this.http.post(this._api + "/choose", {Text: text})
+      .subscribe();
+  }
+  
+
+  login(name: string){
+    this.http.get(this._api + "/quotes", { params : { playerId: name } })
+    .subscribe(data=> this.Me =  {Name: name, MyQuotes: data.json(), Score:  0} );
+
+    if(this.IAmFirstPlayer()){
+      this.http.post(this._api + "/dealer", { PlayerId: name })
+      .subscribe();
+    };
+  }
+
+
+
   MyPlayedQuote = () => this.Model.PlayedQuotes.find( x => x.PlayerId == this.Me.Name );
 
   ChosenQuote = () => this.Model.PlayedQuotes.find( x => x.Chosen);
@@ -53,4 +75,10 @@ export class GameComponent implements OnInit {
   IsEveryoneDone = () => this.Model.PlayedQuotes.length == this.Model.Players.length - 1;
 
   IAmTheDealer = () => this.Me.Name == this.Model.DealerId;
+
+  IAmFirstPlayer = () => this.Model.Players.length == 0;
+
+  FirstQuotePicked = () => this.Model.PlayedQuotes.length > 0;
+
+  CurrentPlayer = (name: string) => this.Me.Name == name;
 }
