@@ -146,7 +146,6 @@ function Game() {
             const chosenQuote = this.PlayedQuotes.find(x=> x.Text == text)
             chosenQuote.Chosen = true;
             this.Players.find(x=> x.PlayerId == chosenQuote.PlayerId).Score++;
-            this.PlayedQuotes = [];
             this.DealerId = this.Players[ (this.Players.findIndex(x=> x.PlayerId == this.DealerId) + 1) % this.Players.length ].PlayerId;
         };
         
