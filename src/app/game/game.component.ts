@@ -36,34 +36,32 @@ export class GameComponent implements OnInit {
   submitQuote(e: MouseEvent, text: string) {
     e.preventDefault();
 
-    if(this.MyPlayedQuote()) return;
-    if(this.IAmTheDealer()) return;
+    if(this.MyPlayedQuote()||this.IAmTheDealer()) return;
     this.http.post(this._api + "/quotes", {Text: text, PlayerId: this.Me.Name})
       .subscribe(data =>{
           if(data.json()){
             this.Me.MyQuotes.splice( this.Me.MyQuotes.indexOf(text), 1 );
           }
-        }
-      );
+        }, err=> {
+      console.log(err);
+      });
   }
 
   chooseQuote(e: MouseEvent, text: string) {
     e.preventDefault();
 
     if(!this.IAmTheDealer()) return;
-    this.http.post(this._api + "/choose", {Text: text})
-      .subscribe();
+    this.http.post(this._api + "/quotes/choose", {Text: text, PlayerId: this.Me.Name})
+      .subscribe(data=> {
+        }, err=> {
+        console.log(err);
+        });
   }
   
 
   login(name: string){
     this.http.get(this._api + "/quotes", { params : { playerId: name } })
     .subscribe(data=> this.Me =  {Name: name, MyQuotes: data.json(), Score:  0} );
-
-    if(this.IAmFirstPlayer()){
-      this.http.post(this._api + "/dealer", { PlayerId: name })
-      .subscribe();
-    };
   }
 
 

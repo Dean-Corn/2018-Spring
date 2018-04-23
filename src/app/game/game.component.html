@@ -49,7 +49,10 @@
       <div class="card-header">Other Players</div>
         <ul class="list-group list-group-flush">
           <li *ngFor="let player of Model.Players" class="list-group-item">
-            {{player.Name}} Score: {{player.Score}}
+            {{player.Name}}
+            <i class="badge float-right" [ngClass]="player.PlayerId == Model.DealerId ? 'badge-warning' : 'badge-info'">
+              {{player.Score}}
+            </i>
           </li>
         </ul>
       </div>

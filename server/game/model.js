@@ -114,7 +114,6 @@ axios.get('https://api.imgflip.com/get_memes')
 
 var iCurrentPicture = 0;
 
-var iCurrentDealer = 0;
 
 function Game() {
         this.Players = [];
@@ -124,6 +123,9 @@ function Game() {
         this.Picture = null;
 
         this.GetQuotes = (playerId) =>{
+            if(!this.DealerId){
+                this.DealerId = playerId;
+            }
             if(this.Players.some(x=> x.PlayerId == playerId)){
 
             }else{
@@ -131,14 +133,21 @@ function Game() {
             }
             return QuoteStack.slice(iCurrentQuote, iCurrentQuote += 7);     
         } 
-        this.FlipPicture = () => this.Picture = PictureStack[iCurrentPicture = (iCurrentPicture + 1) % PictureStack.length];
-
-        this.SubmitQuote = (text, playerId) => this.PlayedQuotes.push({ Text: text, PlayerId: playerId, Chosen: false });
-        this.ChooseQuote = text => {
-            this.PlayedQuotes.find(x => x.Text == text).Chosen = true;
-            this.Players.find(x => x.PlayerId == this.PlayedQuotes.find(x => x.Chosen == true).PlayerId).Score += 1;
+        this.FlipPicture = () =>{
+            this.Picture = PictureStack[iCurrentPicture = (iCurrentPicture + 1) % PictureStack.length];
             this.PlayedQuotes = [];
-            this.DealerId = this.Players[iCurrentDealer = (iCurrentDealer + 1) % this.Players.length].PlayerId;
+        };
+
+        this.SubmitQuote = (text, playerId) => {
+            if(playerId == this.DealerId) throw Error("Dealer can't submit a quote");
+            this.PlayedQuotes.push({ Text: text, PlayerId: playerId });
+            }
+        this.ChooseQuote = text => {
+            const chosenQuote = this.PlayedQuotes.find(x=> x.Text == text)
+            chosenQuote.Chosen = true;
+            this.Players.find(x=> x.PlayerId == chosenQuote.PlayerId).Score++;
+            this.PlayedQuotes = [];
+            this.DealerId = this.Players[this.Players.findIndex(x=> x.PlayerId == this.DealerId)  + 1 % this.Players.length ].PlayerId;
         };
         
         this.FirstDealer = playerId => this.DealerId = playerId;
