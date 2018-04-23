@@ -28,7 +28,6 @@ export class GameComponent implements OnInit {
 
   flipPicture(e: MouseEvent){
     if(!this.IAmTheDealer()) return;
-    if(this.FirstQuotePicked()) return;
     this.http.post(this._api + "/picture", {})
       .subscribe();
   }
