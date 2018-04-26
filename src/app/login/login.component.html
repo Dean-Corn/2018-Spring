@@ -3,9 +3,10 @@
     <div class="card">
       <div class="card-header">Login</div>
       <div class="card-body">
-        <input #Name placeholder="User Name" />
-        <input #Password placeholder="Password" />
-        <button (click)="login(Name.value)" >Login</button>
+      <input #Name placeholder="User Name" />
+      <input #Password placeholder="Password" />
+                             
+      <button (click)="login(Name.value, Password.value)" >Login</button>
     </div>
   </div>
 </div>

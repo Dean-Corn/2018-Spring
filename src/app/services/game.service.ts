@@ -14,12 +14,11 @@ export class GameService {
 
    }
 
-   login(name: string, password: string){
-     if(password == '123'){
-       //log user in
-       this.Me = { Name: name, MyQuotes: [] };
-       this._Router.navigate(['/game']);
-     }
-   }
-
+  login(name: string, password: string){
+    if(password == '123'){
+    // Log the user in
+    this.Me = { Name: name, MyQuotes: [] };
+    this._Router.navigate(['/game']);
+    }
+  }
 }

@@ -41,16 +41,16 @@ export class GameComponent implements OnInit {
   }
 
   flipPicture(e: MouseEvent){
-    this._Messages.Messages.push({Text: 'Picture Flipped', Type: 'success'})
     if(!this.IAmTheDealer()) return;
+    this._Messages.Messages.push({Text: 'Picture Flipped', Type: 'success'})
     this.http.post(this._api + "/picture", {})
       .subscribe();
   }
 
   submitQuote(e: MouseEvent, text: string) {
     e.preventDefault();
-    this._Messages.Messages.push({Text: 'Quote Submitted', Type: 'success'})
     if(this.MyPlayedQuote()||this.IAmTheDealer()) return;
+    this._Messages.Messages.push({Text: 'Quote Submitted', Type: 'success'})
     this.http.post(this._api + "/quotes", {Text: text, PlayerId: this.Me.Name})
       .subscribe(data =>{
           if(data.json()){
@@ -75,6 +75,8 @@ export class GameComponent implements OnInit {
 
   join(name: string){
     this._Messages.Messages.push({ Text: 'You\'ve joined this game. Welcome ' + name , Type: 'success'})
+    this.http.get(this._api + "/quotes", { params : { playerId: name } })
+    .subscribe(data=> this.Me.MyQuotes = data.json() )
   }
 
 
