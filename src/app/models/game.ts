@@ -14,7 +14,6 @@ export class Game {
 export class User {
     Name: string;
     MyQuotes: string[] = [];
-    Score: number;
 }
 
 export class Quote {
